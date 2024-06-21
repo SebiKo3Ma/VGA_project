@@ -98,8 +98,9 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
         endcase
     end
 
-    always @(posedge clk_16bd, negedge rst) begin
+    always @(posedge clk_16bd or posedge rst) begin
         if(rst) begin
+            $display("rst");
             state_ff <= IDLE;
             sample_count_ff <= 4'b0;
             stop_count_ff <= 1'b0;
@@ -109,7 +110,10 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
             frame_valid_ff <= 1'b0;
         end
 
+        $display("always");
+
         if(!rst) begin
+            $display("!rst");
             sample_count_ff <= sample_count_nxt;
             frame_valid_ff <= frame_valid_nxt;
             data_count_ff <= data_count_nxt;
