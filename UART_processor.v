@@ -1,34 +1,38 @@
 `timescale 1ns/1ns
-module UART_processor(input clk_16bd, clk_bd, Rx, valid, input [3:0] data, address, output [8:0] frame, output frame_valid, ack);
+module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, input[3:0] frame_length, output [8:0] frame, output frame_valid);
     localparam[2:0] IDLE = 3'b000,
                     START = 3'b001,
                     READ = 3'b010,
                     PARITY = 3'b011,
-                    CHECK = 3'b100;
-                    STOP = 3'b101;
-                    DROP = 3'b110
+                    STOP = 3'b100,
+                    DROP = 3'b101;
 
     reg[2:0] state_ff, state_nxt;
     reg crt_bit;
     reg odd_bits;
 
     reg[3:0] data_count_ff, data_count_nxt;
-    
     reg[3:0] sample_count_ff, sample_count_nxt;
-
-    reg parity, parity_type, stop_bits;
-    reg[3:0] frame_length;
+    reg stop_count_ff, stop_count_nxt;
 
     reg[8:0] frame_ff, frame_nxt;
+    reg frame_valid_ff, frame_valid_nxt;
+
+    assign frame = frame_ff;
+    assign frame_valid = frame_valid_ff;
 
     always @* begin
         state_nxt = state_ff;
         data_count_nxt = data_count_ff;
+        stop_count_nxt = stop_count_ff;
+        frame_nxt = frame_ff;
+        frame_valid_nxt = frame_valid_ff;
+
         sample_count_nxt = sample_count_ff + 1;
 
         case(state_ff)
             IDLE: begin
-                if(!crt_bit) begin
+                if(!Rx) begin
                     state_nxt = START;
                 end else begin
                     state_nxt = IDLE;
@@ -47,7 +51,7 @@ module UART_processor(input clk_16bd, clk_bd, Rx, valid, input [3:0] data, addre
                     if(crt_bit) begin
                         frame_nxt = frame_ff | (9'b1 << data_count_ff );
                     end
-                    count_nxt = count_ff + 1;
+                    data_count_nxt = data_count_ff + 1;
                 end
             end
 
@@ -66,50 +70,65 @@ module UART_processor(input clk_16bd, clk_bd, Rx, valid, input [3:0] data, addre
                 end
             end
 
-            
+            STOP: begin
+                if(!stop_bits) begin
+                    if(!crt_bit) begin
+                        state_nxt = IDLE;
+                        frame_valid_nxt = 1'b1;
+                    end else begin
+                        state_nxt = DROP;
+                    end
+                end else begin
+                    stop_count_nxt = stop_count_ff + 1;
+
+                    if(crt_bit) begin
+                        state_nxt = DROP;
+                    end else if(stop_count_ff) begin
+                        state_nxt = IDLE;
+                        frame_valid_nxt = 1'b1;
+                    end
+                end
+            end
+
+            DROP: begin
+                frame_nxt = 9'b0;
+                state_nxt = IDLE;
+            end
+
         endcase
     end
 
     always @(posedge clk_16bd, negedge rst) begin
         if(rst) begin
             state_ff <= IDLE;
-            sample_count_ff <= 4'd0;
-            odd_bits = 1'b0;
+            sample_count_ff <= 4'b0;
+            stop_count_ff <= 1'b0;
+            odd_bits <= 1'b0;
+            data_count_ff <= 4'b0;
+            frame_ff <= 9'b0;
+            frame_valid_ff <= 1'b0;
         end
 
         if(!rst) begin
-            count_ff <= count_ff + 1;
-            
-            if(count_ff == 4'd8) begin
+            sample_count_ff <= sample_count_nxt;
+            frame_valid_ff <= frame_valid_nxt;
+            data_count_ff <= data_count_nxt;
+            stop_count_ff <= state_nxt;
+                       
+            if(sample_count_ff == 4'd8) begin
                 crt_bit <= Rx;
             end
         end
     end
 endmodule
 
+    // case(state_ff)
+    //     READ: begin
+    //         data_count_ff <= data_count_nxt;
+    //     end
 
-/*
-if(valid) begin
-                    case(address)
-                        4'b1001: begin
-                            parity = data[3];
-                            ack = 1'b1;
-                        end
+    //     STOP: begin
+    //         stop_count_ff <= state_nxt;
+    //     end
 
-                        4'b1010: begin
-                            parity_type = data[3];
-                            ack = 1'b1;
-                        end
-
-                        4'b1011: begin
-                            stop_bits = data[3];
-                            ack = 1'b1;
-                        end
-
-                        4'b1100: begin
-                            frame_length = 4'b0101 + data;
-                            ack = 1'b1;
-                        end
-                    endcase
-                end
-*/
+    // endcase
