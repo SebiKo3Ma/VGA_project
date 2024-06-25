@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module tb_top();
+module clock_tb();
   reg clk, rst, baud_ready;
   reg [2:0] baud;
   wire clk_16bd, clk_bd;

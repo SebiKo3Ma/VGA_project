@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module tb_top();
+module uart_tb();
     reg clk, rst, baud_ready;
     reg [2:0] baud;
     wire clk_16bd, clk_bd;
@@ -19,41 +19,42 @@ module tb_top();
     
     initial begin
         baud_ready = 1'b0;
-        #1 baud = 2'b01;
+        #1 baud = 2'b10;
         baud_ready = 1'b1;
         rst = 1'b1;
+        #3 rst = 1'b0;
         parity = 1;
         parity_type = 0;
         stop_bits = 1; 
         frame_length = 4'b1000;
         #3 rst = 1'b0;
-        #4 Rx = 1'b0; //start bit
+        #40 Rx = 1'b0; //start bit
 
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b0;
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b0;
-        #160 Rx = 1'b0;
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
 
-        #160 Rx = 1'b0; //parity bit
-        #160 Rx = 1'b1; //stop bit
+        #320 Rx = 1'b0; //parity bit
+        #320 Rx = 1'b1; //stop bit
 
-        #348 Rx = 1'b0; //start bit
+        #682 Rx = 1'b0; //start bit
 
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b0;
-        #160 Rx = 1'b0;
-        #160 Rx = 1'b0;
-        #160 Rx = 1'b1;
-        #160 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
 
-        #160 Rx = 1'b0; //parity bit
-        #160 Rx = 1'b1; //stop bit
+        #320 Rx = 1'b0; //parity bit
+        #320 Rx = 1'b1; //stop bit
 
     end
 endmodule

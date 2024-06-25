@@ -14,7 +14,7 @@ module clock_handler(input [2:0] baud, input clk, baud_ready, rst, output clk_16
         end 
     end
     
-    always @(posedge clk, negedge rst) begin
+    always @(posedge clk or posedge rst) begin
         if(rst) begin
             baud_ratio[0] <= 15'd20833;
             baud_ratio[1] <= 15'd32;

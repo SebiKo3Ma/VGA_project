@@ -13,6 +13,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
 
     reg[3:0] data_count_ff, data_count_nxt;
     reg[3:0] sample_count_ff, sample_count_nxt;
+    reg sample_count_active;
     reg stop_count_ff, stop_count_nxt;
 
     reg[8:0] frame_ff, frame_nxt;
@@ -41,6 +42,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
 
             START: begin
                 sample_count_nxt = 4'd0;
+                sample_count_active = 1'b1;
                 state_nxt = READ;
             end
 
@@ -100,9 +102,9 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
 
     always @(posedge clk_16bd or posedge rst) begin
         if(rst) begin
-            $display("rst");
             state_ff <= IDLE;
             sample_count_ff <= 4'b0;
+            sample_count_active <= 1'b0;
             stop_count_ff <= 1'b0;
             odd_bits <= 1'b0;
             data_count_ff <= 4'b0;
@@ -110,29 +112,21 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
             frame_valid_ff <= 1'b0;
         end
 
-        $display("always");
 
         if(!rst) begin
-            $display("!rst");
-            sample_count_ff <= sample_count_nxt;
-            frame_valid_ff <= frame_valid_nxt;
-            data_count_ff <= data_count_nxt;
-            stop_count_ff <= state_nxt;
-                       
-            if(sample_count_ff == 4'd8) begin
+            if(sample_count_active) begin
+                sample_count_ff <= sample_count_nxt;
+            end
+
+            if(sample_count_ff == 4'd0) begin
+                frame_valid_ff <= frame_valid_nxt;
+                frame_ff <= frame_nxt;
+                data_count_ff <= data_count_nxt;
+                stop_count_ff <= stop_count_nxt;
+                state_ff <= state_nxt;
+            end else if(sample_count_ff == 4'd8) begin
                 crt_bit <= Rx;
             end
         end
     end
 endmodule
-
-    // case(state_ff)
-    //     READ: begin
-    //         data_count_ff <= data_count_nxt;
-    //     end
-
-    //     STOP: begin
-    //         stop_count_ff <= state_nxt;
-    //     end
-
-    // endcase
