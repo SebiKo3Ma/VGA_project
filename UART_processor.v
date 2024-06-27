@@ -13,7 +13,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
 
     reg[3:0] data_count_ff, data_count_nxt;
     reg[3:0] sample_count_ff, sample_count_nxt;
-    reg sample_count_active;
+    reg sample_count_active, parity_invalid;
     reg stop_count_ff, stop_count_nxt;
 
     reg[8:0] frame_ff, frame_nxt;
@@ -67,13 +67,17 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
                     end else if(parity_type && odd_bits != crt_bit) begin //odd parity
                         state_nxt = STOP;
                     end else begin
-                        state_nxt = DROP;
+                        parity_invalid = 1'b1;
+                        state_nxt = STOP;
                     end
                 end
             end
 
             STOP: begin
-                if(!stop_bits) begin
+                if(parity_invalid) begin
+                    parity_invalid = 1'b0;
+                    state_nxt = DROP;
+                end else if(!stop_bits) begin
                     if(!crt_bit) begin
                         state_nxt = IDLE;
                         frame_valid_nxt = 1'b1;
@@ -124,7 +128,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
                 data_count_ff <= data_count_nxt;
                 stop_count_ff <= stop_count_nxt;
                 state_ff <= state_nxt;
-            end else if(sample_count_ff == 4'd8) begin
+            end else if(sample_count_ff == 4'd6) begin
                 crt_bit <= Rx;
             end
         end
