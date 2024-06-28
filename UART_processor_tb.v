@@ -25,7 +25,7 @@ module uart_tb();
         #3 rst = 1'b0;
         parity = 1;
         parity_type = 0;
-        stop_bits = 1; 
+        stop_bits = 0; 
         frame_length = 4'b1000;
         #3 rst = 1'b0;
         #40 Rx = 1'b0; //start bit
@@ -42,7 +42,7 @@ module uart_tb();
         #320 Rx = 1'b0; //parity bit
         #320 Rx = 1'b1; //stop bit
 
-        #682 Rx = 1'b0; //start bit
+        #2682 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b1;

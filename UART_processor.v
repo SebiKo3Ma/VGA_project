@@ -31,29 +31,39 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
 
         sample_count_nxt = sample_count_ff + 1;
 
+        if(sample_count_ff == 4'd7) begin
+                crt_bit = Rx;
+        end
+
         case(state_ff)
             IDLE: begin
                 if(!Rx) begin
                     state_nxt = START;
+                    sample_count_nxt = 4'd0;
                 end else begin
                     state_nxt = IDLE;
                 end
             end
 
             START: begin
-                sample_count_nxt = 4'd0;
-                sample_count_active = 1'b1;
-                state_nxt = READ;
+                data_count_nxt = 0;
+                frame_nxt = 9'd0;
+                frame_valid_nxt = 1'b0;
+                if(sample_count_ff == 4'd15) begin
+                    state_nxt = READ;
+                end
             end
 
             READ: begin
-                if(data_count_ff == frame_length) begin
+                if(data_count_ff == frame_length - 1 && sample_count_ff == 4'd15) begin
                     state_nxt = PARITY;
                 end else begin
-                    if(crt_bit) begin
+                    if(crt_bit && sample_count_ff == 4'd15) begin
                         frame_nxt = frame_ff | (9'b1 << data_count_ff );
                     end
-                    data_count_nxt = data_count_ff + 1;
+                    if(sample_count_ff == 4'd15) begin
+                        data_count_nxt = data_count_ff + 1;
+                    end
                 end
             end
 
@@ -63,12 +73,18 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
                 end else begin
                     odd_bits = frame_ff[0] ^ frame_ff[1] ^ frame_ff[2] ^ frame_ff[3] ^ frame_ff[4] ^ frame_ff[5] ^ frame_ff[6] ^ frame_ff[7] ^ frame_ff[8];
                     if(!parity_type && odd_bits == crt_bit) begin  //even parity
-                        state_nxt = STOP;
+                        if(sample_count_ff == 4'd15) begin
+                            state_nxt = STOP;
+                        end
                     end else if(parity_type && odd_bits != crt_bit) begin //odd parity
-                        state_nxt = STOP;
+                        if(sample_count_ff == 4'd15) begin
+                            state_nxt = STOP;
+                        end
                     end else begin
                         parity_invalid = 1'b1;
-                        state_nxt = STOP;
+                        if(sample_count_ff == 4'd15) begin
+                            state_nxt = STOP;
+                        end
                     end
                 end
             end
@@ -114,23 +130,18 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
             data_count_ff <= 4'b0;
             frame_ff <= 9'b0;
             frame_valid_ff <= 1'b0;
+            crt_bit <= 1'b1;
+            parity_invalid <= 1'b0;
         end
 
 
         if(!rst) begin
-            if(sample_count_active) begin
-                sample_count_ff <= sample_count_nxt;
-            end
-
-            if(sample_count_ff == 4'd0) begin
-                frame_valid_ff <= frame_valid_nxt;
-                frame_ff <= frame_nxt;
-                data_count_ff <= data_count_nxt;
-                stop_count_ff <= stop_count_nxt;
-                state_ff <= state_nxt;
-            end else if(sample_count_ff == 4'd6) begin
-                crt_bit <= Rx;
-            end
+            sample_count_ff <= sample_count_nxt;
+            frame_valid_ff <= frame_valid_nxt;
+            frame_ff <= frame_nxt;
+            data_count_ff <= data_count_nxt;
+            stop_count_ff <= stop_count_nxt;
+            state_ff <= state_nxt;
         end
     end
 endmodule
