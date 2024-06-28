@@ -1,0 +1,8 @@
+1. Valid frame (even parity, 1 stop bit) - PASSED
+2. Invalid parity frame (even parity, 1 stop bit) - PASSED
+3. Invalid stop frame (even parity, 1 stop bit) - PASSED
+4. Valid frame (no parity) - PASSED
+5. Invalid parity frame (odd parity, 1 stop bit) - PASSED
+6. Valid frame (odd parity, 1 stop bit) - FAILED
+7. Valid stop frame (even parity, 2 stop bits) - PASSED* (check stop counter)
+8. Invalid stop frame (even parity, 2 stop bits) - FAILED (check stop counter)

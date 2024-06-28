@@ -28,6 +28,9 @@ module uart_tb();
         stop_bits = 0; 
         frame_length = 4'b1000;
         #3 rst = 1'b0;
+
+        //valid and invalid frame with even parity
+
         #40 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
@@ -53,8 +56,111 @@ module uart_tb();
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
 
+        #320 Rx = 1'b1; //parity bit - invalid parity
+        #320 Rx = 1'b1; //stop bit
+
+        // frame with invalid stop
+
+        #2682 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b0; //parity bit
+        #320 Rx = 1'b0; //stop bit - invalid stop
+        #320 Rx = 1'b1; //idle
+
+        // frame with no parity
+
+        parity = 0;
+
+        #2682 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b1; //stop bit
+
+        // invalid and valid frame with odd parity
+
+        #400 parity = 1;
+        parity_type = 1;
+
+        #2282 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b0; //parity bit - invalid parity
+        #320 Rx = 1'b1; //stop bit
+
+        #2682 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b1; //parity bit
+        #320 Rx = 1'b1; //stop bit
+
+        // valid and invalid frames for 2 stop bits
+        #400 parity_type = 0;
+        stop_bits = 1;
+
+        #2282 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+
         #320 Rx = 1'b0; //parity bit
         #320 Rx = 1'b1; //stop bit
+
+        #2682 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b1; //parity bit
+        #320 Rx = 1'b1; //stop bit
+        #320 Rx = 1'b0; //invalid second stop bit
+        #320 Rx = 1'b1; //idle
+
+
 
     end
 endmodule
