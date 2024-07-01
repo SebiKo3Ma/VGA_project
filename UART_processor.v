@@ -53,6 +53,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
                 data_count_nxt = 0;
                 frame_nxt = 9'd0;
                 frame_valid_nxt = 1'b0;
+                stop_count_nxt = 1'b0;
                 if(sample_count_ff == 4'd15) begin
                     state_nxt = READ;
                 end
@@ -94,29 +95,24 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
             end
 
             STOP: begin
-                if(parity_invalid && sample_count_ff == 4'd15) begin
-                    parity_invalid = 1'b0;
-                    state_nxt = DROP;
-                end else if(!stop_bits) begin
-                    if(crt_bit) begin
-                        if(sample_count_ff == 4'd15) begin
+                if(sample_count_ff == 4'd15) begin
+                    if(parity_invalid) begin
+                        parity_invalid = 1'b0;
+                        state_nxt = DROP;
+                    end else if(!stop_bits) begin
+                        if(crt_bit) begin
                             state_nxt = IDLE;
                             frame_valid_nxt = 1'b1;
+                        end else begin
+                            state_nxt = DROP;
                         end
                     end else begin
-                        if(sample_count_ff == 4'd15) begin
-                            state_nxt = DROP;
-                        end
-                    end
-                end else begin
-                    stop_count_nxt = stop_count_ff + 1;
 
-                    if(!crt_bit) begin
-                        if(sample_count_ff == 4'd15) begin
+                        stop_count_nxt = stop_count_ff + 1;
+
+                        if(!crt_bit) begin
                             state_nxt = DROP;
-                        end
-                    end else if(stop_count_ff) begin
-                        if(sample_count_ff == 4'd15) begin
+                        end else if(stop_count_ff) begin
                             state_nxt = IDLE;
                             frame_valid_nxt = 1'b1;
                         end

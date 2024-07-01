@@ -155,7 +155,7 @@ module uart_tb();
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
 
-        #320 Rx = 1'b1; //parity bit
+        #320 Rx = 1'b0; //parity bit
         #320 Rx = 1'b1; //stop bit
         #320 Rx = 1'b0; //invalid second stop bit
         #320 Rx = 1'b1; //idle
