@@ -10,7 +10,7 @@ module uart_tb();
     wire frame_valid;
 
     clock_handler clk_handler(.clk(clk), .baud(baud), .baud_ready(baud_ready), .rst(rst), .clk_16bd(clk_16bd), .clk_bd(clk_bd));
-    UART_processor UART(.clk_16bd(clk), .rst(rst), .Rx(Rx), .parity(parity), .parity_type(parity_type), .stop_bits(stop_bits), .frame_length(frame_length), .frame(frame), .frame_valid(frame_valid));
+    UART_processor UART(.clk_16bd(clk_16bd), .rst(rst), .Rx(Rx), .parity(parity), .parity_type(parity_type), .stop_bits(stop_bits), .frame_length(frame_length), .frame(frame), .frame_valid(frame_valid));
 
     initial begin
     clk = 0;
