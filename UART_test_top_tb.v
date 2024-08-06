@@ -24,9 +24,9 @@ module tb_top();
         #104200 Rx = 1'b0;
         #104200 Rx = 1'b1;
         #104200 Rx = 1'b1;
-        #104200 Rx = 1'b0;
+        #104200 Rx = 1'b1;
 
-        #104200 Rx = 1'b0; //parity bit
+        #104200 Rx = 1'b1; //parity bit
         #104200 Rx = 1'b1; //stop bit
     end
 

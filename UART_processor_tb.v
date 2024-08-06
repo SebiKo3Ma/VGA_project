@@ -10,7 +10,7 @@ module uart_tb();
     wire frame_valid;
 
     clock_handler clk_handler(.clk(clk), .baud(baud), .baud_ready(baud_ready), .rst(rst), .clk_16bd(clk_16bd), .clk_bd(clk_bd));
-    UART_processor UART(.clk_16bd(clk_16bd), .rst(rst), .Rx(Rx), .parity(parity), .parity_type(parity_type), .stop_bits(stop_bits), .frame_length(frame_length), .frame(frame), .frame_valid(frame_valid));
+    UART_processor UART(.clk_16bd(clk), .rst(rst), .Rx(Rx), .parity(parity), .parity_type(parity_type), .stop_bits(stop_bits), .frame_length(frame_length), .frame(frame), .frame_valid(frame_valid));
 
     initial begin
     clk = 0;
@@ -29,9 +29,38 @@ module uart_tb();
         frame_length = 4'b1000;
         #3 rst = 1'b0;
 
+        #40 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+
+        #320 Rx = 1'b0; //parity bit
+        #320 Rx = 1'b1; //stop bit
+
+        #2682 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+
+        #320 Rx = 1'b1; //parity bit - invalid parity
+        #320 Rx = 1'b1; //stop bit
+
+
         //valid and invalid frame with even parity
 
-        #40 Rx = 1'b0; //start bit
+        #2682 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
@@ -158,6 +187,8 @@ module uart_tb();
         #320 Rx = 1'b0; //parity bit
         #320 Rx = 1'b1; //stop bit
         #320 Rx = 1'b0; //invalid second stop bit
+
+
         #320 Rx = 1'b1; //idle
 
 
