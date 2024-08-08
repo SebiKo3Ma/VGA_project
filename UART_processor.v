@@ -137,10 +137,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
             frame_valid_ff <= 1'b0;
             crt_bit <= 1'b1;
             parity_invalid <= 1'b0;
-        end
-
-
-        if(!rst) begin
+        end else begin
             sample_count_ff <= sample_count_nxt;
             frame_valid_ff <= frame_valid_nxt;
             frame_ff <= frame_nxt;
