@@ -55,6 +55,7 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
                 frame_valid_nxt = 1'b0;
                 stop_count_nxt = 1'b0;
                 odd_bits = 1'b0;
+                parity_invalid = 1'b0;
                 if(sample_count_ff == 4'd15) begin
                     state_nxt = READ;
                 end
@@ -131,12 +132,9 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
             state_ff <= IDLE;
             sample_count_ff <= 4'b0;
             stop_count_ff <= 1'b0;
-            odd_bits <= 1'b0;
             data_count_ff <= 4'b0;
             frame_ff <= 9'b0;
             frame_valid_ff <= 1'b0;
-            crt_bit <= 1'b1;
-            parity_invalid <= 1'b0;
         end else begin
             sample_count_ff <= sample_count_nxt;
             frame_valid_ff <= frame_valid_nxt;
