@@ -33,7 +33,7 @@ module uart_tb();
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
-        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
         #320 Rx = 1'b0;
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
@@ -60,7 +60,7 @@ module uart_tb();
 
         //valid and invalid frame with even parity
 
-        #2682 Rx = 1'b0; //start bit
+        #10000 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
@@ -90,7 +90,7 @@ module uart_tb();
 
         // frame with invalid stop
 
-        #2682 Rx = 1'b0; //start bit
+        #5000 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b1;
@@ -109,7 +109,7 @@ module uart_tb();
 
         parity = 0;
 
-        #2682 Rx = 1'b0; //start bit
+        #2500 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
@@ -127,7 +127,7 @@ module uart_tb();
         #400 parity = 1;
         parity_type = 1;
 
-        #2282 Rx = 1'b0; //start bit
+        #7500 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;
@@ -159,7 +159,7 @@ module uart_tb();
         #400 parity_type = 0;
         stop_bits = 1;
 
-        #2282 Rx = 1'b0; //start bit
+        #10000 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b0;

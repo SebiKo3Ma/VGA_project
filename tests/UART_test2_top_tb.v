@@ -13,21 +13,21 @@ module tb_top();
 
     initial begin
         rst = 1'b1;
-        #300000 rst = 1'b0;
+        #300 rst = 1'b0;
 
-        #30000 Rx = 1'b0; //start bit
+        #300 Rx = 1'b0; //start bit
 
-        #104200 Rx = 1'b1;
-        #104200 Rx = 1'b0;
-        #104200 Rx = 1'b1;
-        #104200 Rx = 1'b0;
-        #104200 Rx = 1'b0;
-        #104200 Rx = 1'b1;
-        #104200 Rx = 1'b1;
-        #104200 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
 
-        #104200 Rx = 1'b1; //parity bit
-        #104200 Rx = 1'b1; //stop bit
+        #320 Rx = 1'b1; //parity bit
+        #320 Rx = 1'b1; //stop bit
     end
 
 endmodule

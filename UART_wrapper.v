@@ -1,4 +1,4 @@
-module UART_module(input clk_16bd, rst, Rx, valid, input[3:0] data, address, output ack, frame_valid, output[9:0] frame);
+module UART_module(input clk_16bd, rst, Rx, valid, input[3:0] data, address, output ack, frame_valid, output[8:0] frame);
 
     wire parity, parity_type, stop_bits;
     wire[3:0] frame_length;
