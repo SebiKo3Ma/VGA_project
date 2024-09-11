@@ -1,12 +1,12 @@
 `timescale 1ns/1ns
-module frame_dec_tb();
+module address_dec_tb();
     reg clk, rst, ack, frame_valid;
     reg[7:0] frame;
 
     wire valid;
     wire[3:0] data, address;
 
-    frame_decoder frame_decoder(.clk(clk), .rst(rst), .frame(frame), .frame_valid(frame_valid), .ack(ack), .data(data), .address(address), .valid(valid));
+    address_decoder address_decoder(.clk(clk), .rst(rst), .frame(frame), .frame_valid(frame_valid), .ack(ack), .data(data), .address(address), .valid(valid));
 
     initial begin
     clk = 0;

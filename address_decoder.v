@@ -1,7 +1,8 @@
 `timescale 1ns/1ns
-module frame_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, output[3:0] data, address, output valid);
+module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, output[3:0] data, address, output valid);
     reg[3:0] data_ff, address_ff, data_nxt, address_nxt;
     reg valid_ff, valid_nxt;
+    reg[2:0] count_ff, count_nxt;
 
     assign data = data_ff;
     assign address = address_ff;
@@ -18,6 +19,7 @@ module frame_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, o
         state_nxt = state_ff;
         address_nxt = address_ff;
         data_nxt = data_ff;
+        count_nxt = count_ff;
 
         case(state_ff)
             WAIT: begin
@@ -34,8 +36,12 @@ module frame_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, o
 
             SEND: begin
                 valid_nxt = 1'b1;
+                count_nxt = count_ff + 1'b1;
                 if(ack) begin
+                    count_nxt = 1'b0;
                     state_nxt = ACK;
+                end else if(count_ff == 3'b111) begin
+                    state_nxt = WAIT;
                 end
             end
 
@@ -52,11 +58,13 @@ module frame_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, o
             address_ff <= 4'b0000;
             data_ff <= 4'b0000;
             valid_ff <= 1'b0;
+            count_ff <= 3'b000;
         end else begin
             state_ff <= state_nxt;
             address_ff <= address_nxt;
             data_ff <= data_nxt;
             valid_ff <= valid_nxt;
+            count_ff <= count_nxt;
         end
     end
 endmodule

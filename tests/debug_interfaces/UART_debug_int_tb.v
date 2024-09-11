@@ -1,10 +1,10 @@
 `timescale 1ns/1ns
-module tb_uart_debugger();
+module tb_uart_debug_int();
     reg[8:0] frame;
     reg clk, rst, frame_valid;
     wire[8:0] debug_frame;
 
-    UART_debugger UART_debugger(.clk(clk), .rst(rst), .frame(frame), .frame_valid(frame_valid), .debug_frame(debug_frame));
+    UART_debug_int UART_debug_int(.clk(clk), .rst(rst), .frame(frame), .frame_valid(frame_valid), .debug_frame(debug_frame));
 
     initial begin
         clk = 0;
