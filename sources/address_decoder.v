@@ -20,6 +20,7 @@ module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack,
         address_nxt = address_ff;
         data_nxt = data_ff;
         count_nxt = count_ff;
+        valid_nxt = valid_ff;
 
         case(state_ff)
             WAIT: begin

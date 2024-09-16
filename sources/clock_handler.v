@@ -1,16 +1,17 @@
 `timescale 1ns/1ns
-module clock_handler(input [2:0] baud, input clk, baud_ready, rst, output clk_16bd, clk_bd);
+module clock_handler(input [2:0] baud, input clk, baud_ready, rst, output clk_16bd); //, clk_bd);
     reg [14:0] baud_ratio [4:0];
     wire [14:0] baudRatio16;
-    reg[2:0] baud_pos, baud_pos_next;
+    reg[2:0] baud_pos_ff, baud_pos_nxt;
     
-    assign baudRatio16 = baud_ratio[baud_pos] >> 4;
+    assign baudRatio16 = baud_ratio[baud_pos_ff] >> 4;
     clk_divider #(27) clk_module_16bd(clk, rst, 1'b1, baudRatio16, clk_16bd);
-    clk_divider #(27) clk_module_bd(clk, rst, 1'b1, baud_ratio[baud_pos], clk_bd);
+  //  clk_divider #(27) clk_module_bd(clk, rst, 1'b1, baud_ratio[baud_pos], clk_bd);
 
     always @(*) begin
+        baud_pos_nxt = baud_pos_ff;
         if(baud_ready) begin
-            baud_pos_next = baud;
+            baud_pos_nxt = baud;
         end 
     end
     
@@ -22,7 +23,7 @@ module clock_handler(input [2:0] baud, input clk, baud_ready, rst, output clk_16
             baud_ratio[3] <= 15'd1736;
             baud_ratio[4] <= 15'd868;
         end else begin
-            baud_pos <= baud_pos_next;
+            baud_pos_ff <= baud_pos_nxt;
         end
     end
 endmodule

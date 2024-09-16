@@ -124,6 +124,9 @@ module UART_processor(input clk_16bd, rst, Rx, parity, parity_type, stop_bits, i
                 state_nxt = IDLE;
             end
 
+            default: begin
+                state_nxt = IDLE;
+            end
         endcase
     end
 

@@ -39,6 +39,9 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
                     frame_length_nxt = data;
                     ack_nxt = 1'b1;
                 end
+
+                default: begin
+                end
             endcase
 
             count_nxt = 1'b1;
