@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module UART_debugger(input clk, rst, input[8:0] frame, input frame_valid, output[8:0] debug_frame);
+module UART_debug_int(input clk, rst, input[8:0] frame, input frame_valid, output[8:0] debug_frame);
 
 reg[8:0] debug_frame_ff, debug_frame_nxt;
 assign debug_frame = debug_frame_ff;
