@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module debug_interface(input clk, rst, debug, frame_valid, input[8:0] frame, input[3:0] data_out, output[8:0] debug_frame, output [3:0] debug_reg);
+module debug_interface(input clk, rst, debug, frame_valid, data_out_valid, input[8:0] frame, input[3:0] data_out, output[8:0] debug_frame, output [3:0] debug_reg);
 
 reg[8:0] debug_frame_ff, debug_frame_nxt;
 reg[3:0] debug_reg_ff, debug_reg_nxt;
@@ -8,9 +8,14 @@ assign debug_reg = debug_reg_ff;
 
 always @* begin
     debug_frame_nxt = debug_frame_ff;
-    debug_reg_nxt = data_out;
+    debug_reg_nxt = debug_reg_ff;
+
     if(frame_valid) begin
         debug_frame_nxt = frame;
+    end
+
+    if(data_out_valid) begin
+        debug_reg_nxt = data_out;
     end
 
 end

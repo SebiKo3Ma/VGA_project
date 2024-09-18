@@ -88,8 +88,13 @@ module tb_top();
         #320 Rx = 1'b0;
         #320 Rx = 1'b1; //stop bit
 
+        #3000
+        debug = 1'b0;
+        #1000;
+        debug = 1'b1;
+
         //read frame_length register
-        #6000 Rx = 1'b0; //start bit
+        #3000 Rx = 1'b0; //start bit
 
         #320 Rx = 1'b1;
         #320 Rx = 1'b1;
