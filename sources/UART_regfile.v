@@ -20,7 +20,7 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
         count_nxt = count_ff;
         ack_nxt = ack_ff;
         data_out_nxt = data_out_ff;
-        data_out_nxt = data_out_valid_ff;
+        data_out_valid_nxt = data_out_valid_ff;
 
         if(valid && !count_ff) begin
             case(address)
