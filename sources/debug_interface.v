@@ -4,6 +4,7 @@ module debug_interface(input clk, rst, debug, frame_valid, input[8:0] frame, inp
 reg[8:0] debug_frame_ff, debug_frame_nxt;
 reg[3:0] debug_reg_ff, debug_reg_nxt;
 assign debug_frame = debug_frame_ff;
+assign debug_reg = debug_reg_ff;
 
 always @* begin
     debug_frame_nxt = debug_frame_ff;
