@@ -42,6 +42,7 @@ module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack,
                     count_nxt = 1'b0;
                     state_nxt = ACK;
                 end else if(count_ff == 3'b111) begin
+                    valid_nxt = 1'b0;
                     state_nxt = WAIT;
                 end
             end

@@ -107,6 +107,36 @@ module tb_top();
 
         #320 Rx = 1'b0; //parity bit
         #320 Rx = 1'b1; //stop bit
+
+        //read baud_rate register
+        #3000 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b1; //parity bit
+        #320 Rx = 1'b1; //stop bit
+
+        //baud_rate 2
+        #3000 Rx = 1'b0; //start bit
+
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b1;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+        #320 Rx = 1'b0;
+
+        #320 Rx = 1'b0; //parity bit
+        #320 Rx = 1'b1; //stop bit
     end
 
 endmodule

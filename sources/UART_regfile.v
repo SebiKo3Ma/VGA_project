@@ -8,9 +8,9 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
     assign parity_type = parity_type_ff;
     assign stop_bits = stop_bits_ff;
     assign frame_length = frame_length_ff;
-    assign ack = ack_ff;
-    assign data_out = data_out_ff;
-    assign data_out_valid = data_out_valid_ff;
+    assign(strong1, weak0) ack = ack_ff;
+    assign(strong1, weak0) data_out = data_out_ff;
+    assign(strong1, weak0) data_out_valid = data_out_valid_ff;
 
     always @* begin
         parity_nxt = parity_ff;
@@ -33,6 +33,7 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
                     end
 
                     ack_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 4'b1010: begin
@@ -44,6 +45,7 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
                     end
 
                     ack_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 4'b1011: begin
@@ -55,6 +57,7 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
                     end
 
                     ack_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 4'b1100: begin
@@ -66,19 +69,19 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
                     end
                     
                     ack_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 default: begin
                 end
             endcase
-
-            count_nxt = 1'b1;
         end
 
         if(count_ff) begin
             ack_nxt = 1'b0;
             count_nxt = 1'b0;
             data_out_valid_nxt = 1'b0;
+            data_out_nxt = 4'b0000;
         end
     end
     

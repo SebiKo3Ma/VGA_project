@@ -6,9 +6,9 @@ module clock_regfile(input clk, rst, input[3:0] address, data, input valid, outp
     reg count_ff, count_nxt;
 
     assign baud = baud_ff;
-    assign ack = ack_ff;
-    assign data_out = data_out_ff;
-    assign data_out_valid = data_out_valid_ff;
+    assign(strong1, weak0) ack = ack_ff;
+    assign(strong1, weak0) data_out = data_out_ff;
+    assign(strong1, weak0) data_out_valid = data_out_valid_ff;
 
     always @* begin
         baud_nxt = baud_ff;
@@ -28,19 +28,19 @@ module clock_regfile(input clk, rst, input[3:0] address, data, input valid, outp
                     end
                     
                     ack_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 default: begin
                 end
             endcase
-
-            count_nxt = 1'b1;
         end
 
         if(count_ff) begin
             ack_nxt = 1'b0;
             count_nxt = 1'b0;
             data_out_valid_nxt = 1'b0;
+            data_out_nxt = 4'b0000;
         end
     end
     
