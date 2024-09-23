@@ -3,7 +3,7 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
     reg ack_ff, ack_nxt, data_out_valid_ff, data_out_valid_nxt;
     reg[3:0] data_out_ff, data_out_nxt;
     reg[1:0] ch_ff, ch_nxt, channel_ff, channel_nxt;
-    reg count_ff, count_nxt;
+    reg count_ff, count_nxt, check_add_ff, check_add_nxt;
 
     assign channel = channel_ff;
     assign ack = ack_ff;
@@ -14,6 +14,7 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
         ch_nxt = ch_ff;
         channel_nxt = channel_ff;
         count_nxt = count_ff;
+        check_add_nxt = check_add_ff;
         ack_nxt = ack_ff;
         data_out_nxt = data_out_ff;
         data_out_valid_nxt = data_out_valid_ff;
@@ -50,7 +51,7 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
             ch_nxt = channel_nxt;
         end
 
-        if(add) begin
+        if(add && !check_add_nxt) begin
             if(channel_nxt == 2'b00) begin
                 if(SW0) begin
                     ch_nxt = 2'b01;
@@ -71,7 +72,10 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
                 end
             end else begin
                 ch_nxt = 2'b00;
-            end            
+            end
+            check_add_nxt = 1'b1;            
+        end else if(!add) begin
+            check_add_nxt = 1'b0;
         end
     end
     
@@ -83,6 +87,7 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
             ack_ff <= 1'b0;
             data_out_ff <= 4'b0000;
             data_out_valid_ff <= 1'b0;
+            check_add_ff <= 1'b0;
         end else begin
             ch_ff <= ch_nxt;
             channel_ff <= channel_nxt;
@@ -90,6 +95,7 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
             ack_ff <= ack_nxt;
             data_out_ff <= data_out_nxt;
             data_out_valid_ff <= data_out_valid_nxt;
+            check_add_ff <= check_add_nxt;
         end
     end
 endmodule
