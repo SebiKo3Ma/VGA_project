@@ -4,9 +4,9 @@ module top(input clk, rst, Rx, debug, output[8:0] debug_frame, output[3:0] debug
     wire data_out_valid, data_out_valid_clk, data_out_valid_uart;
     wire[8:0] frame;
 
-    in2_1bit_or_gate or_ack(ack_clk, ack_uart, ack);
-    in2_1bit_or_gate or_data_out_valid(data_out_valid_clk, data_out_valid_uart, data_out_valid);
-    in2_4bit_or_gate or_data_out(data_out_clk, data_out_uart, data_out);
+    or2_1b or_ack(ack_clk, ack_uart, ack);
+    or2_1b or_data_out_valid(data_out_valid_clk, data_out_valid_uart, data_out_valid);
+    or2_4b or_data_out(data_out_clk, data_out_uart, data_out);
 
     clock_handler_module clock_handler_module(clk, rst, address, data, valid, ack_clk, data_out_clk, data_out_valid_clk, clk_16bd);
     UART_module uart_module(clk_16bd, rst, Rx, valid, data, address, ack_uart, data_out_valid_uart, frame_valid, frame, data_out_uart);
