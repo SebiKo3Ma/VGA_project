@@ -1,8 +1,10 @@
 `timescale 1ns/1ns
-module debug_interface(input clk, rst, debug, frame_valid, data_out_valid, input[8:0] frame, input[3:0] data_out, output[8:0] debug_frame, output [3:0] debug_reg);
+module debug_interface(input clk, rst, debug, frame_valid, data_out_valid, input[1:0] channel, input[8:0] frame, input[3:0] data_out, output[8:0] debug_frame, output [3:0] debug_reg, output[1:0] debug_ch);
 
 reg[8:0] debug_frame_ff, debug_frame_nxt;
 reg[3:0] debug_reg_ff, debug_reg_nxt;
+
+assign debug_ch = channel;
 assign debug_frame = debug_frame_ff;
 assign debug_reg = debug_reg_ff;
 
