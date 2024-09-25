@@ -4,8 +4,9 @@ module tb_top_aux_modules();
     wire [8:0] debug_frame;
     wire[3:0] debug_reg;
     wire[1:0] debug_ch;
+    wire[7:0] pos, segments;
 
-    top aux_modules(clk, rst, Rx, SW0, SW1, BTNC, debug, debug_frame, debug_reg, debug_ch);
+    top aux_modules(clk, rst, Rx, SW0, SW1, BTNC, debug, debug_frame, debug_reg, debug_ch, pos, segments);
 
     initial begin
         clk = 0;
