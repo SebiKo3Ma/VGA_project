@@ -3,14 +3,16 @@ module debug_interface(input clk, rst, debug, frame_valid, data_out_valid, input
 
 reg[8:0] debug_frame_ff, debug_frame_nxt;
 reg[3:0] debug_reg_ff, debug_reg_nxt;
+reg[1:0] channel_ff, channel_nxt;
 
-assign debug_ch = channel;
+assign debug_ch = channel_ff;
 assign debug_frame = debug_frame_ff;
 assign debug_reg = debug_reg_ff;
 
 always @* begin
     debug_frame_nxt = debug_frame_ff;
     debug_reg_nxt = debug_reg_ff;
+    channel_nxt = channel;
 
     if(frame_valid) begin
         debug_frame_nxt = frame;
@@ -26,12 +28,15 @@ always @(posedge clk or posedge rst) begin
     if(rst) begin
         debug_frame_ff <= 9'b000000000;
         debug_reg_ff <= 4'b0000;
+        channel_ff <= 2'b00;
     end else if(debug) begin
         debug_frame_ff <= debug_frame_nxt;
         debug_reg_ff <= debug_reg_nxt;
+        channel_ff <= channel_nxt;
     end else begin
         debug_frame_ff <= 9'b000000000;
         debug_reg_ff <= 4'b0000;
+        channel_ff <= 2'b00;
     end
 end
 

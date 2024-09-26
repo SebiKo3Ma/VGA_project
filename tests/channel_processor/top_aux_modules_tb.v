@@ -90,6 +90,9 @@ module tb_top_aux_modules();
         #100 BTNC = 1'b1;
         #40   BTNC = 1'b0;
 
+        #100 debug = 1'b0;
+        #100 debug = 1'b1;
+
         #100 BTNC = 1'b1;
         #40   BTNC = 1'b0;
 
