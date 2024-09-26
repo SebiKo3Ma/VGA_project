@@ -77,6 +77,10 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
         end else if(!add) begin
             check_add_nxt = 1'b0;
         end
+
+        if((channel_ff == 2'b01 && !SW0) || (channel_ff == 2'b10 && !SW1) || (channel_ff == 2'b11 && (!SW0 || !SW1))) begin
+            ch_nxt = 2'b00;
+        end
     end
     
     always @(posedge clk or posedge rst) begin
