@@ -4,7 +4,7 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, debug, en_7s_frame, output[8:0] d
     wire data_out_valid, data_out_valid_clk, data_out_valid_uart, data_out_valid_ch;
     wire[8:0] frame;
     wire[1:0] channel;
-    wire[7:0][3:0] digit;
+    wire[31:0] digit;
     wire[7:0] en_dot;
 
     or3_1b or_ack(ack_clk, ack_uart, ack_ch, ack);
