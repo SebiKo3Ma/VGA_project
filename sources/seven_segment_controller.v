@@ -1,4 +1,4 @@
-module seven_segment_controller(input clk_1Hz, rst, input[7:0][3:0] digit, input[7:0] en_dot, output [7:0] pos, segments);
+module seven_segment_controller(input clk_8KHz, rst, input[7:0][3:0] digit, input[7:0] en_dot, output [7:0] pos, segments);
     reg[7:0] segments_ff, segments_nxt, pos_ff, pos_nxt;
     reg[2:0] count_ff, count_nxt;
 
@@ -156,7 +156,7 @@ module seven_segment_controller(input clk_1Hz, rst, input[7:0][3:0] digit, input
         endcase
     end
 
-    always @(posedge clk_1Hz or posedge rst) begin
+    always @(posedge clk_8KHz or posedge rst) begin
         if(rst) begin
             segments_ff <= 8'b11111111;
             pos_ff <= 8'b11111111;

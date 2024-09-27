@@ -1,11 +1,9 @@
-module top(input clk, rst, Rx, SW0, SW1, BTNC, debug, en_7s_frame, output[8:0] debug_frame, output[3:0] debug_reg, output[1:0] debug_ch, output[7:0] pos, segments);
-    wire clk_16bd, clk_8KHz, ack, ack_clk, ack_uart, ack_ch, valid, add;
+module top(input clk, rst, Rx, SW0, SW1, BTNC, debug, output[8:0] debug_frame, output[3:0] debug_reg, output[1:0] debug_ch, output[7:0] pos, segments);
+    wire clk_16bd, ack, ack_clk, ack_uart, ack_ch, valid, add;
     wire[3:0] data, address, data_out, data_out_clk, data_out_uart, data_out_ch;
     wire data_out_valid, data_out_valid_clk, data_out_valid_uart, data_out_valid_ch;
     wire[8:0] frame;
     wire[1:0] channel;
-    wire[7:0][3:0] digit;
-    wire[7:0] en_dot;
 
     or3_1b or_ack(ack_clk, ack_uart, ack_ch, ack);
     or3_1b or_data_out_valid(data_out_valid_clk, data_out_valid_uart, data_out_valid_ch, data_out_valid);
@@ -17,6 +15,5 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, debug, en_7s_frame, output[8:0] d
     debug_interface debug_interface(clk, rst, debug, frame_valid, data_out_valid, channel, frame, data_out, debug_frame, debug_reg, debug_ch);
     debouncer dbc3(clk, rst, BTNC, add);
     channel_processor channel_processor(clk, rst, SW0, SW1, add, address, data, valid, ack_ch, data_out_ch, data_out_valid_ch, channel);
-    seven_segment_interface int7(clk, rst, en_7s_frame, frame_valid, frame, channel, digit, en_dot);
-    seven_segment_controller ctrl7(clk_8KHz, rst, digit, en_dot, pos, segments);
+    //seven_segment_controller seven_segm(clk, rst, channel, pos, segments);
 endmodule

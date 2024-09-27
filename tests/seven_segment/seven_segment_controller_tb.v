@@ -6,7 +6,7 @@ module tb_7seg_ctrl();
 
     wire[7:0] pos, segments;
 
-    seven_segment_interface int7(clk, rst, digit, en_dot, pos, segments);
+    seven_segment_controller ctrl7(clk, rst, digit, en_dot, pos, segments);
 
     initial begin
         clk = 0;
