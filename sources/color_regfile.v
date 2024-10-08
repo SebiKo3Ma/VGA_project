@@ -1,7 +1,7 @@
 `timescale 1ns/1ns
-module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] data, address, input valid, output ack, output[23:0] rgb0, rgb1, rgb2, rgb3);
+module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] data, address, input valid, output ack, color_valid, output[23:0] rgb0, rgb1, rgb2, rgb3);
     reg[23:0] rgb0_ff, rgb0_nxt, rgb1_ff, rgb1_nxt, rgb2_ff, rgb2_nxt, rgb3_ff, rgb3_nxt;
-    reg ack_ff, ack_nxt, color_next_check_ff, color_next_check_nxt, count_ff, count_nxt;
+    reg ack_ff, ack_nxt, color_next_check_ff, color_next_check_nxt, count_ff, count_nxt, color_valid_nxt, color_valid_ff;
     reg[1:0] preset0_ff, preset0_nxt, preset1_ff, preset1_nxt, preset2_ff, preset2_nxt, preset3_ff, preset3_nxt;
 
     reg [23:0] preset [3:0];
@@ -11,6 +11,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
     assign rgb2 = rgb2_ff;
     assign rgb3 = rgb3_ff;
     assign ack = ack_ff;
+    assign color_valid = color_valid_ff;
 
        always @* begin
         rgb0_nxt = rgb0_ff;
@@ -22,6 +23,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
         preset2_nxt = preset2_ff;
         preset3_nxt = preset3_ff;
         ack_nxt = ack_ff;
+        color_valid_nxt = color_valid_ff;
         count_nxt = count_ff;
         color_next_check_nxt = color_next_check_ff;
 
@@ -51,6 +53,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     endcase
 
                     ack_nxt = 1'b1;
+                    color_valid_nxt = 1'b1;
                     count_nxt = 1'b1;
                 end
 
@@ -78,6 +81,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     endcase
 
                     ack_nxt = 1'b1;
+                    color_valid_nxt = 1'b1;
                     count_nxt = 1'b1;
                 end
 
@@ -105,6 +109,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     endcase
 
                     ack_nxt = 1'b1;
+                    color_valid_nxt = 1'b1;
                     count_nxt = 1'b1;
                 end
 
@@ -132,6 +137,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     endcase
 
                     ack_nxt = 1'b1;
+                    color_valid_nxt = 1'b1;
                     count_nxt = 1'b1;
                 end
 
@@ -159,6 +165,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     endcase
 
                     ack_nxt = 1'b1;
+                    color_valid_nxt = 1'b1;
                     count_nxt = 1'b1;
                 end
 
@@ -186,6 +193,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     endcase
 
                     ack_nxt = 1'b1;
+                    color_valid_nxt = 1'b1;
                     count_nxt = 1'b1;
                 end
 
@@ -196,6 +204,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
 
         if(count_ff) begin
             ack_nxt = 1'b0;
+            color_valid_nxt = 1'b0;
             count_nxt = 1'b0;
         end
 
@@ -243,8 +252,11 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
 
                 default : begin
                 end
+
             endcase
 
+            color_valid_nxt = 1'b1;
+            count_nxt = 1'b1;
             color_next_check_nxt = 1'b1;
         end
 
@@ -270,6 +282,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
             preset3_ff <= 2'b11;
             color_next_check_ff <= 1'b0;
             ack_ff <= 1'b0;
+            color_valid_ff <= 1'b0;
             count_ff <= 1'b0;
         end else begin
             rgb0_ff <= rgb0_nxt;
@@ -282,6 +295,7 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
             preset3_ff <= preset3_nxt;
             color_next_check_ff <= color_next_check_nxt;
             ack_ff <= ack_nxt;
+            color_valid_ff <= color_valid_nxt;
             count_ff <= count_nxt;
         end
     end 
