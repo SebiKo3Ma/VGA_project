@@ -13,3 +13,7 @@ endmodule
 module or3_4b(input[3:0] a, b, c, output[3:0] d);
     assign d = a | b | c;
 endmodule
+
+module or4_1b(input a, b, c, d, output e);
+    assign e = a | b | c | d;
+endmodule
