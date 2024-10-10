@@ -11,8 +11,6 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     wire[11:0] px_12bit_data;
     wire[23:0] px_24bit_data;
 
-    reg[3:0] resolution;
-    resolution = 4'b0000;
 
     or4_1b or_ack(ack_clk, ack_uart, ack_ch, ack_clr, ack);
     or3_1b or_data_out_valid(data_out_valid_clk, data_out_valid_uart, data_out_valid_ch, data_out_valid);
@@ -30,6 +28,6 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     debouncer dbc1(clk, rst, BTNU, swap_v);
     debouncer dbc2(clk, rst, BTNL, swap_h);
     color_processor_wrapper clr_pw(clk, rst, swap_h, swap_v, color_next, SW0, SW1, 
-        channel, resolution, address, data, valid, ack_clr, px_h, px_v, px_12bit_data, px_24bit_data);
+        channel, 4'b0000, address, data, valid, ack_clr, px_h, px_v, px_12bit_data, px_24bit_data);
 
 endmodule

@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module tb_top_aux_modules();
+module tb_top_cp();
     reg clk, rst, debug, Rx, SW0, SW1, BTNC, BTNR, BTNL, BTNU, en_7s_frame;
     wire [8:0] debug_frame;
     wire[3:0] debug_reg;
@@ -15,7 +15,6 @@ module tb_top_aux_modules();
 
     task send(input [7:0] data);
         begin
-            #400
             Rx = 1'b0; //start bit;
             #320 Rx = data[0];
             #320 Rx = data[1];
@@ -28,6 +27,8 @@ module tb_top_aux_modules();
 
             #320 Rx = data[0] ^ data[1] ^ data[2] ^ data[3] ^ data[4] ^ data[5] ^ data[6] ^ data[7]; //parity bit
             #320 Rx = 1'b1; //stop bit
+            
+            #400;
         end
     endtask
 
@@ -47,61 +48,37 @@ module tb_top_aux_modules();
 
         en_7s_frame = 1'b1;
 
-        //channel 1
-        #300 Rx = 1'b0; //start bit
+        send(8'b00110101);
+        send(8'b01001010);
+        send(8'b01011101);
+        send(8'b01100001);
+        send(8'b01111110);
+        send(8'b10000111);
 
-        #320 Rx = 1'b1;
-        #320 Rx = 1'b0;
-        #320 Rx = 1'b0;
-        #320 Rx = 1'b0;
-        #320 Rx = 1'b0;
-        #320 Rx = 1'b1;
-        #320 Rx = 1'b0;
-        #320 Rx = 1'b0;
+        send(8'b00100001);
 
-        #320 Rx = 1'b0; //parity bit
-        #320 Rx = 1'b1; //stop bit
+        send(8'b01100110);
 
-        #500 SW0 = 1'b1;
+        SW0 = 1'b1;
+        #40  send(8'b00100001);
 
-        #2000 
+        send(8'b01100110);
 
-        //channel 1
-        
-
-        //read channel
-        
-
-        #1000 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
-
-        en_7s_frame = 1'b0;
+        SW1 = 1'b1;
 
         #100 BTNC = 1'b1;
         #40   BTNC = 1'b0;
 
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
+        #100 BTNR = 1'b1;
+        #40   BTNR = 1'b0;
 
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
+        #100 BTNU = 1'b1;
+        #40   BTNU = 1'b0;
 
-        #100 SW1 = 1'b1;
+        #100 BTNL = 1'b1;
+        #40   BTNL = 1'b0;
 
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
 
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
-
-        #100 debug = 1'b0;
-        #100 debug = 1'b1;
-
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
-
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
     end
 
 endmodule
