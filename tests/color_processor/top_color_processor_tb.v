@@ -1,12 +1,12 @@
 `timescale 1ns/1ns
 module tb_top_cp();
-    reg clk, rst, debug, Rx, SW0, SW1, BTNC, BTNR, BTNL, BTNU, en_7s_frame;
+    reg clk, rst, debug, Rx, SW0, SW1, BTNC, BTNR, BTNL, BTNU, en_7s_frame, debug_color;
     wire [8:0] debug_frame;
     wire[3:0] debug_reg;
     wire[1:0] debug_ch;
     wire[7:0] pos, segments;
 
-    top aux_modules(clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_frame, debug_frame, debug_reg, debug_ch, pos, segments);
+    top clr_processor(clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_frame, debug_color, debug_frame, debug_reg, debug_ch, pos, segments);
 
     initial begin
         clk = 0;
@@ -41,6 +41,7 @@ module tb_top_cp();
         BTNU = 1'b0;
         BTNL = 1'b0;
         en_7s_frame = 1'b0;
+        debug_color = 1'b0;
         debug = 1'b0;
         Rx = 1'b1;
         #300 rst = 1'b0;
@@ -58,6 +59,9 @@ module tb_top_cp();
         send(8'b00100001);
 
         send(8'b01100110);
+
+        en_7s_frame = 1'b0;
+        debug_color = 1'b1;
 
         SW0 = 1'b1;
         #40  send(8'b00100001);
@@ -77,8 +81,6 @@ module tb_top_cp();
 
         #100 BTNL = 1'b1;
         #40   BTNL = 1'b0;
-
-
     end
 
 endmodule
