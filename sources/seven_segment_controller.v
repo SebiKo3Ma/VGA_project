@@ -1,4 +1,4 @@
-module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:0] en_dot, output [7:0] pos, segments);
+module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:0] en_dot, en_digit, output [7:0] pos, segments);
     reg[7:0] segments_ff, segments_nxt, pos_ff, pos_nxt;
     reg[2:0] count_ff, count_nxt;
 
@@ -100,8 +100,59 @@ module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:
                     end
                 end
 
-            //no digit
-                4'b1111 : convert = 8'b11111111;
+            //digit A
+                4'b1010 : begin
+                    if(dot) begin
+                        convert =  8'b00010000;
+                    end else begin
+                        convert =  8'b00010001;
+                    end
+                end
+
+            //digit B
+                4'b1011 : begin
+                    if(dot) begin
+                        convert =  8'b11000000;
+                    end else begin
+                        convert =  8'b11000001;
+                    end
+                end
+
+            //digit C
+                4'b1001 : begin
+                    if(dot) begin
+                        convert =  8'b01100010;
+                    end else begin
+                        convert =  8'b01100011;
+                    end
+                end
+
+            //digit D
+                4'b1001 : begin
+                    if(dot) begin
+                        convert =  8'b10000100;
+                    end else begin
+                        convert =  8'b10000101;
+                    end
+                end
+
+            //digit E
+                4'b1001 : begin
+                    if(dot) begin
+                        convert =  8'b01100000;
+                    end else begin
+                        convert =  8'b01100001;
+                    end
+                end
+
+            //digit F
+                4'b1001 : begin
+                    if(dot) begin
+                        convert =  8'b01110000;
+                    end else begin
+                        convert =  8'b01110001;
+                    end
+                end
 
                 default : convert = 8'b11111111;
             endcase
@@ -116,42 +167,74 @@ module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:
         case(count_nxt)
             3'b000: begin 
                 pos_nxt = 8'b11111110;
-                segments_nxt = convert(digit[3:0], en_dot[0]);
+                if(en_digit[0]) begin
+                    segments_nxt = convert(digit[3:0], en_dot[0]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b001: begin 
                 pos_nxt = 8'b11111101;
-                segments_nxt = convert(digit[7:4], en_dot[1]);
+                if(en_digit[1]) begin
+                    segments_nxt = convert(digit[7:4], en_dot[1]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b010: begin 
                 pos_nxt = 8'b11111011;
-                segments_nxt = convert(digit[11:8], en_dot[2]);
+                if(en_digit[2]) begin
+                    segments_nxt = convert(digit[11:8], en_dot[2]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b011: begin 
                 pos_nxt = 8'b11110111;
-                segments_nxt = convert(digit[15:12], en_dot[3]);
+                if(en_digit[3]) begin
+                    segments_nxt = convert(digit[15:12], en_dot[3]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b100: begin 
                 pos_nxt = 8'b11101111;
-                segments_nxt = convert(digit[19:16], en_dot[4]);
+                if(en_digit[4]) begin
+                    segments_nxt = convert(digit[19:16], en_dot[4]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b101: begin 
                 pos_nxt = 8'b11011111;
-                segments_nxt = convert(digit[23:20], en_dot[5]);
+                if(en_digit[5]) begin
+                    segments_nxt = convert(digit[23:20], en_dot[5]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b110: begin 
                 pos_nxt = 8'b10111111;
-                segments_nxt = convert(digit[27:24], en_dot[6]);
+                if(en_digit[6]) begin
+                    segments_nxt = convert(digit[27:24], en_dot[6]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
 
             3'b111: begin 
                 pos_nxt = 8'b01111111;
-                segments_nxt = convert(digit[31:28], en_dot[7]);
+                if(en_digit[7]) begin
+                    segments_nxt = convert(digit[31:28], en_dot[7]);
+                end else begin
+                    segments_nxt = 8'b11111111;
+                end
             end
         endcase
     end
