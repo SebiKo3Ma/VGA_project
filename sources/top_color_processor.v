@@ -22,7 +22,7 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     debug_interface debug_interface(clk, rst, debug, frame_valid, data_out_valid, channel, frame, data_out, debug_frame, debug_reg, debug_ch);
     debouncer dbc3(clk, rst, BTNC, add);
     channel_processor channel_processor(clk, rst, SW0, SW1, add, address, data, valid, ack_ch, data_out_ch, data_out_valid_ch, channel);
-    seven_segment_interface int7(clk, rst, en_7s_frame, debug_color, fault, frame_valid, frame, channel, rgb0, rgb1, rgb2, rgb3, digit, en_dot);
+    seven_segment_interface int7(clk, rst, en_7s_frame, debug_color, fault, frame_valid, frame, channel, rgb0, rgb1, rgb2, rgb3, digit, en_dot, en_digit);
     seven_segment_controller ctrl7(clk_8KHz, rst, digit, en_dot, en_digit, pos, segments);
     debouncer dbc0(clk, rst, BTNR, color_next);
     debouncer dbc1(clk, rst, BTNU, swap_v);

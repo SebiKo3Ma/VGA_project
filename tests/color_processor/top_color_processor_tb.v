@@ -87,6 +87,8 @@ module tb_top_cp();
         #40
         send(8'b00000000);
         #100 en_7s_frame = 1'b0;
+
+        send(8'b00110101);
     end
 
 endmodule

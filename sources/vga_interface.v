@@ -100,7 +100,7 @@ module vga_interface(input clk, rst, input[23:0] ch0, ch1, ch2, ch3, input[3:0] 
                 px_12_nxt[7:4] = ch2[15:12];
                 px_12_nxt[3:0] = ch2[7:4];
             end else begin
-                px_24_nxt = ch1;
+                px_24_nxt = ch3;
                 px_12_nxt[11:8] = ch3[23:20];
                 px_12_nxt[7:4] = ch3[15:12];
                 px_12_nxt[3:0] = ch3[7:4];
@@ -113,8 +113,8 @@ module vga_interface(input clk, rst, input[23:0] ch0, ch1, ch2, ch3, input[3:0] 
         if(rst) begin
             px_12_ff <= 12'd0;
             px_24_ff <= 24'd0;
-            hmax_nxt <= 320;
-            vmax_nxt <= 240;
+            hmax_ff <= 320;
+            vmax_ff <= 240;
         end else begin
             px_12_ff <= px_12_nxt;
             px_24_ff <= px_24_nxt;

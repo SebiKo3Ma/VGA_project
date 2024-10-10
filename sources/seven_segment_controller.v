@@ -119,7 +119,7 @@ module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:
                 end
 
             //digit C
-                4'b1001 : begin
+                4'b1100 : begin
                     if(dot) begin
                         convert =  8'b01100010;
                     end else begin
@@ -128,7 +128,7 @@ module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:
                 end
 
             //digit D
-                4'b1001 : begin
+                4'b1101 : begin
                     if(dot) begin
                         convert =  8'b10000100;
                     end else begin
@@ -137,7 +137,7 @@ module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:
                 end
 
             //digit E
-                4'b1001 : begin
+                4'b1110 : begin
                     if(dot) begin
                         convert =  8'b01100000;
                     end else begin
@@ -146,7 +146,7 @@ module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:
                 end
 
             //digit F
-                4'b1001 : begin
+                4'b1111 : begin
                     if(dot) begin
                         convert =  8'b01110000;
                     end else begin
