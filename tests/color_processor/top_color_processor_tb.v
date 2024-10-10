@@ -81,6 +81,12 @@ module tb_top_cp();
 
         #100 BTNL = 1'b1;
         #40   BTNL = 1'b0;
+
+        #400 debug_color = 1'b0;
+        en_7s_frame = 1'b1;
+        #40
+        send(8'b00000000);
+        #100 en_7s_frame = 1'b0;
     end
 
 endmodule

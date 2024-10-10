@@ -1,12 +1,13 @@
 `timescale 1ns/1ns
-module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, output[3:0] data, address, output valid);
+module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack, output[3:0] data, address, output valid, fault);
     reg[3:0] data_ff, address_ff, data_nxt, address_nxt;
-    reg valid_ff, valid_nxt;
+    reg valid_ff, valid_nxt, fault_ff, fault_nxt;
     reg[2:0] count_ff, count_nxt;
 
     assign data = data_ff;
     assign address = address_ff;
     assign valid = valid_ff;
+    assign fault = fault_ff;
 
     localparam[1:0] WAIT = 2'b00,
                     SPLIT = 2'b01,
@@ -21,6 +22,7 @@ module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack,
         data_nxt = data_ff;
         count_nxt = count_ff;
         valid_nxt = valid_ff;
+        fault_nxt = fault_ff;
 
         case(state_ff)
             WAIT: begin
@@ -43,12 +45,14 @@ module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack,
                     state_nxt = ACK;
                 end else if(count_ff == 3'b111) begin
                     valid_nxt = 1'b0;
+                    fault_nxt = 1'b1;
                     state_nxt = WAIT;
                 end
             end
 
             ACK: begin
                 valid_nxt = 1'b0;
+                fault_nxt = 1'b0;
                 state_nxt = WAIT;
             end
         endcase
@@ -61,12 +65,14 @@ module address_decoder(input clk, rst, input[7:0] frame, input frame_valid, ack,
             data_ff <= 4'b0000;
             valid_ff <= 1'b0;
             count_ff <= 3'b000;
+            fault_ff <= 1'b0;
         end else begin
             state_ff <= state_nxt;
             address_ff <= address_nxt;
             data_ff <= data_nxt;
             valid_ff <= valid_nxt;
             count_ff <= count_nxt;
+            fault_ff <= fault_nxt;
         end
     end
 endmodule
