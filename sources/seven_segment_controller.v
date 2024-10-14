@@ -1,4 +1,4 @@
-module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:0] en_dot, en_digit, output [7:0] pos, segments);
+module seven_segment_controller(input clk_8KHz, rst, input[31:0] digit, input[7:0] en_dot, en_digit, output [7:0] pos, output [7:0] segments);
     reg[7:0] segments_ff, segments_nxt, pos_ff, pos_nxt;
     reg[2:0] count_ff, count_nxt;
 

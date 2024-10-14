@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module seven_segment_interface(input clk, rst, en_7s_frame, debug_color, fault, frame_valid, input[8:0] frame, input[1:0] channel, input[23:0]rgb0, rgb1, rgb2, rgb3, output[31:0] digit, output[7:0] en_dot, en_digit);
+module seven_segment_interface(input clk, rst, en_7s_frame, debug_color, debug_clr_reg, fault, frame_valid, input[8:0] frame, input[1:0] channel, input[23:0]rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3, output[31:0] digit, output[7:0] en_dot, en_digit);
     reg[31:0] digit_ff, digit_nxt;
     reg[7:0] en_dot_ff, en_dot_nxt, en_digit_ff, en_digit_nxt;
     reg[7:0] frame_ff, frame_nxt;
@@ -26,13 +26,23 @@ module seven_segment_interface(input clk, rst, en_7s_frame, debug_color, fault, 
             if(debug_color) begin
                 en_digit_nxt = 8'b11111101;
                 digit_nxt[7:2] = 6'b000000;
-                case(channel)
-                    2'b00 : digit_nxt[31:8] = rgb0;
-                    2'b01 : digit_nxt[31:8] = rgb1;
-                    2'b10 : digit_nxt[31:8] = rgb2;
-                    2'b11 : digit_nxt[31:8] = rgb3;
-                    default : digit_nxt[31:8] = 24'b000000000000000000000000;
-                endcase
+                if(debug_clr_reg) begin
+                    case(channel)
+                        2'b00 : digit_nxt[31:8] = ch0;
+                        2'b01 : digit_nxt[31:8] = ch1;
+                        2'b10 : digit_nxt[31:8] = ch2;
+                        2'b11 : digit_nxt[31:8] = ch3;
+                        default : digit_nxt[31:8] = 24'b000000000000000000000000;
+                    endcase
+                end else begin
+                    case(channel)
+                        2'b00 : digit_nxt[31:8] = rgb0;
+                        2'b01 : digit_nxt[31:8] = rgb1;
+                        2'b10 : digit_nxt[31:8] = rgb2;
+                        2'b11 : digit_nxt[31:8] = rgb3;
+                        default : digit_nxt[31:8] = 24'b000000000000000000000000;
+                    endcase
+                end
             end else if(fault) begin
                 en_digit_nxt = 8'b10000001;
                 digit_nxt[31:2] = 30'b111100000000000000000000000000;
