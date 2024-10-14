@@ -2,9 +2,9 @@
 module clock_tb();
   reg clk, rst;
   reg [2:0] baud;
-  wire clk_16bd;
+  wire clk_16bd, clk_8KHz, clk_25MHz;
   
-  clock_handler clk_handler(clk, rst, baud, clk_16bd);
+  clock_handler clk_handler(clk, rst, baud, clk_16bd, clk_8KHz, clk_25MHz);
   
   initial begin
     clk = 0;
