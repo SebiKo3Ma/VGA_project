@@ -26,7 +26,7 @@ module seven_segment_interface(input clk, rst, en_7s_frame, debug_color, debug_c
             if(debug_color) begin
                 en_digit_nxt = 8'b11111101;
                 digit_nxt[7:2] = 6'b000000;
-                if(debug_clr_reg) begin
+                if(!debug_clr_reg) begin
                     case(channel)
                         2'b00 : digit_nxt[31:8] = ch0;
                         2'b01 : digit_nxt[31:8] = ch1;
