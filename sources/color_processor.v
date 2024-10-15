@@ -83,10 +83,10 @@ module color_processor(input clk, rst, SW0, SW1, swap_h, swap_v, color_valid, in
             ch1_ff <= 24'd0;
             ch2_ff <= 24'd0;
             ch3_ff <= 24'd0;
-            rgb0_ff <= 24'd0;
-            rgb1_ff <= 24'd0;
-            rgb2_ff <= 24'd0;
-            rgb3_ff <= 24'd0;
+            rgb0_ff <= 24'hff0000;
+            rgb1_ff <= 24'h00ff00;
+            rgb2_ff <= 24'h0000ff;
+            rgb3_ff <= 24'hffff00;
             swap_h_check_ff <= 1'b0;
             swap_v_check_ff <= 1'b0;
         end else begin

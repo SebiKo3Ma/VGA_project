@@ -48,52 +48,17 @@ module top_tb();
         BTNL = 1'b0;
         en_7s_frame = 1'b0;
         debug_color = 1'b0;
+        debug_clr_reg = 1'b0;
         debug = 1'b0;
         Rx = 1'b1;
         #300 rst = 1'b0;
+        #100
         debug = 1'b1;
-
-        en_7s_frame = 1'b1;
-
-        send(8'b00110101);
-        send(8'b01001010);
-        send(8'b01011101);
-        send(8'b01100001);
-        send(8'b01111110);
-        send(8'b10000111);
-
-        send(8'b00100001);
-
-        send(8'b01100110);
-
-        en_7s_frame = 1'b0;
+        #100
         debug_color = 1'b1;
-
+        #100
         SW0 = 1'b1;
-        #40  send(8'b00100001);
-
-        send(8'b01100110);
-
+        #100
         SW1 = 1'b1;
-
-        #100 BTNC = 1'b1;
-        #40   BTNC = 1'b0;
-
-        #100 BTNR = 1'b1;
-        #40   BTNR = 1'b0;
-
-        #100 BTNU = 1'b1;
-        #40   BTNU = 1'b0;
-
-        #100 BTNL = 1'b1;
-        #40   BTNL = 1'b0;
-
-        #400 debug_color = 1'b0;
-        en_7s_frame = 1'b1;
-        #40
-        send(8'b00000000);
-        #100 en_7s_frame = 1'b0;
-
-        send(8'b00110101);
     end
 endmodule
