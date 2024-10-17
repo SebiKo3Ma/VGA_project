@@ -2,8 +2,8 @@
 module vga_controller(input px_clk, rst, input[11:0] px_data, output[10:0] px_h, px_v, 
                         output[3:0] RED, GRN, BLU, output HSYNC, VSYNC);
     reg hs_ff, hs_nxt, vs_ff, vs_nxt;
-    reg[9:0] hcount_ff, hcount_nxt;
-    reg[9:0] vcount_ff, vcount_nxt;
+    reg[10:0] hcount_ff, hcount_nxt;
+    reg[10:0] vcount_ff, vcount_nxt;
     
     localparam h_data = 640;
     localparam h_fp = 16;
