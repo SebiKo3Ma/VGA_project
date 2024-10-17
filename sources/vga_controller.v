@@ -19,14 +19,14 @@ module vga_controller(input px_clk, rst, input[11:0] px_data, output[10:0] px_h,
 
     localparam polarity = 1;
 
-    assign RED = px_data[11:8];
-    assign GRN = px_data[7:4];
-    assign BLU = px_data[3:0];
+    assign RED = (hcount_ff < h_data && vcount_ff < v_data) ? px_data[11:8] : 4'b0000;
+    assign GRN = (hcount_ff < h_data && vcount_ff < v_data) ? px_data[7:4] : 4'b0000;
+    assign BLU = (hcount_ff < h_data && vcount_ff < v_data) ? px_data[3:0] : 4'b0000;
     assign HSYNC = hs_ff;
     assign VSYNC = vs_ff;
 
-    assign px_h = hcount_ff;
-    assign px_v = vcount_ff;
+    assign px_h = hcount_ff < h_data ? hcount_ff : 1'b0;
+    assign px_v = vcount_ff < v_data ? vcount_ff : 1'b0;
 
     always @* begin
         hs_nxt = hs_ff;
