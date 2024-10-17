@@ -5,11 +5,12 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
             output[3:0] RED, GRN, BLU, output HSYNC, VSYNC);
 
 
-    wire clk_16bd, clk_8KHz, px_clk, ack, ack_clk, ack_uart, ack_ch, ack_clr, valid, add, swap_h, swap_v, color_next, fault;
-    wire[3:0] data, address, data_out, data_out_clk, data_out_uart, data_out_ch;
-    wire data_out_valid, data_out_valid_clk, data_out_valid_uart, data_out_valid_ch;
+    wire clk_16bd, clk_8KHz, px_clk, ack, ack_clk, ack_uart, ack_ch, ack_clr, ack_res, valid, add, swap_h, swap_v, color_next, fault;
+    wire[3:0] data, address, data_out, data_out_clk, data_out_uart, data_out_ch, data_out_res;
+    wire data_out_valid, data_out_valid_clk, data_out_valid_uart, data_out_valid_ch, data_out_vaild_res;
     wire[8:0] frame;
     wire[1:0] channel;
+    wire[3:0] resolution;
     wire[31:0] digit;
     wire[7:0] en_dot, en_digit;
 
@@ -17,12 +18,9 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     wire[11:0] px_12bit_data;
     wire[23:0] px_24bit_data, rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3;
 
-    localparam resolution = 4'b0000;
-
-
-    or4_1b or_ack(ack_clk, ack_uart, ack_ch, ack_clr, ack);
-    or3_1b or_data_out_valid(data_out_valid_clk, data_out_valid_uart, data_out_valid_ch, data_out_valid);
-    or3_4b or_data_out(data_out_clk, data_out_uart, data_out_ch, data_out);
+    assign ack = ack_clk | ack_uart | ack_ch | ack_clr | ack_res;
+    assign data_out_vaild = data_out_valid_clk | data_out_valid_uart | data_out_valid_ch | data_out_vaild_res;
+    assign data_out = data_out_clk | data_out_uart | data_out_ch | data_out_res;
 
     clock_handler_module clock_handler_module(clk, rst, address, data, valid, ack_clk, data_out_clk, data_out_valid_clk, clk_16bd, clk_8KHz, px_clk);
     
@@ -41,6 +39,8 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     debouncer dbc0(clk, rst, BTNR, color_next);
     debouncer dbc1(clk, rst, BTNU, swap_v);
     debouncer dbc2(clk, rst, BTNL, swap_h);
+
+    resolution_regfile res_reg(clk, rst, address, data, valid, ack_res, data_out_res, data_out_valid_res, resolution);
 
     color_processor_wrapper clr_pw(clk, rst, swap_h, swap_v, color_next, SW0, SW1, 
         channel, resolution, address, data, valid, ack_clr, 

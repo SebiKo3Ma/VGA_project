@@ -60,5 +60,7 @@ module top_tb();
         SW0 = 1'b1;
         #100
         SW1 = 1'b1;
+
+        #1000 send(8'b11010010);
     end
 endmodule
