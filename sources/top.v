@@ -7,7 +7,7 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
 
     wire clk_16bd, clk_8KHz, px_clk, ack, ack_clk, ack_uart, ack_ch, ack_clr, ack_res, valid, add, swap_h, swap_v, color_next, fault;
     wire[3:0] data, address, data_out, data_out_clk, data_out_uart, data_out_ch, data_out_res;
-    wire data_out_valid, data_out_valid_clk, data_out_valid_uart, data_out_valid_ch, data_out_vaild_res;
+    wire data_out_valid, data_out_valid_clk, data_out_valid_uart, data_out_valid_ch, data_out_valid_res;
     wire[8:0] frame;
     wire[1:0] channel;
     wire[3:0] resolution;
@@ -19,7 +19,7 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     wire[23:0] px_24bit_data, rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3;
 
     assign ack = ack_clk | ack_uart | ack_ch | ack_clr | ack_res;
-    assign data_out_vaild = data_out_valid_clk | data_out_valid_uart | data_out_valid_ch | data_out_vaild_res;
+    assign data_out_valid = data_out_valid_clk | data_out_valid_uart | data_out_valid_ch | data_out_valid_res;
     assign data_out = data_out_clk | data_out_uart | data_out_ch | data_out_res;
 
     clock_handler_module clock_handler_module(clk, rst, address, data, valid, ack_clk, data_out_clk, data_out_valid_clk, clk_16bd, clk_8KHz, px_clk);
