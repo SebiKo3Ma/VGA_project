@@ -24,6 +24,13 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
 
         if(valid && !count_ff) begin
             case(address)
+                4'b0000 : begin
+                    parity_nxt = 1'b1;
+                    parity_type_nxt = 1'b0;
+                    stop_bits_nxt = 1'b0;
+                    frame_length_nxt = 4'b1000;
+                end
+
                 4'b1001: begin
                     if(data == 4'b1111) begin
                         data_out_nxt = parity_nxt;

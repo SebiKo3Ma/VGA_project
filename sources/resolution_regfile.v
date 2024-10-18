@@ -19,6 +19,10 @@ module resolution_regfile(input clk, rst, input[3:0] address, data, input valid,
 
         if(valid && !count_ff) begin
             case(address)
+                4'b0000: begin
+                    res_nxt = 4'b0000;
+                end
+
                 4'b1101: begin
                     if(data == 4'b1111) begin
                         data_out_nxt = res_nxt;

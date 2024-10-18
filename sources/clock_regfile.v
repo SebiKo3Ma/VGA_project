@@ -22,6 +22,11 @@ module clock_regfile(input clk, rst, input[3:0] address, data, input valid, outp
 
         if(valid && !count_ff) begin
             case(address)
+                4'b0000: begin
+                    baud_nxt = 3'b001;
+                    px_ratio_pos_nxt = 4'b0000;
+                end
+
                 4'b0001: begin
                     if(data == 4'b1111) begin
                         data_out_nxt = baud_nxt;

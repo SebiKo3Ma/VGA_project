@@ -21,6 +21,10 @@ module channel_processor(input clk, rst, SW0, SW1, add, input[3:0] address, data
 
         if(valid && !count_ff) begin
             case(address)
+                4'b0000 : begin
+                    ch_nxt = 2'b00;
+                end
+
                 4'b0010: begin
                     if(data == 4'b1111) begin
                         data_out_nxt = ch_nxt;

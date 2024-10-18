@@ -29,6 +29,13 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
 
         if(valid && !count_ff) begin
             case(address)
+                4'b0000: begin
+                    rgb0_nxt = preset[0];
+                    rgb1_nxt = preset[1];
+                    rgb2_nxt = preset[2];
+                    rgb3_nxt = preset[3];
+                end
+
                 4'b0011: begin //RED MSB
                     case(channel)
                         //channel 0
