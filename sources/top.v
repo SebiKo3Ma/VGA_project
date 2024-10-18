@@ -47,6 +47,6 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
         px_h, px_v, px_12bit_data, px_24bit_data,
         rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3);
 
-    vga_controller VGA(px_clk, rst, px_12bit_data, px_h, px_v, RED, GRN, BLU, HSYNC, VSYNC);
+    vga_controller VGA(px_clk, rst, px_12bit_data, resolution, px_h, px_v, RED, GRN, BLU, HSYNC, VSYNC);
 
 endmodule
