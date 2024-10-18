@@ -29,6 +29,9 @@ module uart_regfile(input clk_16bd, rst, valid, input[3:0] data, address, output
                     parity_type_nxt = 1'b0;
                     stop_bits_nxt = 1'b0;
                     frame_length_nxt = 4'b1000;
+
+                    ack_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 4'b1001: begin

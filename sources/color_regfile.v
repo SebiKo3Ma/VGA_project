@@ -34,6 +34,9 @@ module color_regfile(input clk, rst, color_next, input[1:0] channel, input[3:0] 
                     rgb1_nxt = preset[1];
                     rgb2_nxt = preset[2];
                     rgb3_nxt = preset[3];
+
+                    color_valid_nxt = 1'b1;
+                    count_nxt = 1'b1;
                 end
 
                 4'b0011: begin //RED MSB
