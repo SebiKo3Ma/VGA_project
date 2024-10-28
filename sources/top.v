@@ -32,7 +32,7 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
     debouncer dbc3(clk, rst, BTNC, add);
     channel_processor channel_processor(clk, rst, SW0, SW1, add, address, data, valid, ack_ch, data_out_ch, data_out_valid_ch, channel);
     
-    seven_segment_interface int7(clk, rst, en_7s_frame, debug_color, debug_clr_reg, fault, frame_valid, frame, channel,
+    seven_segment_interface int7(clk, rst, en_7s_frame, debug_color, debug_clr_reg, fault, frame_valid, frame[7:0], channel,
             rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3, digit, en_dot, en_digit);
     seven_segment_controller ctrl7(clk_8KHz, rst, digit, en_dot, en_digit, pos, segments);
     
@@ -42,7 +42,7 @@ module top(input clk, rst, Rx, SW0, SW1, BTNC, BTNR, BTNU, BTNL, debug, en_7s_fr
 
     resolution_regfile res_reg(clk, rst, address, data, valid, ack_res, data_out_res, data_out_valid_res, resolution);
 
-    color_processor_wrapper clr_pw(clk, rst, swap_h, swap_v, color_next, SW0, SW1, 
+    color_processor_module clr_pw(clk, rst, swap_h, swap_v, color_next, SW0, SW1, 
         channel, resolution, address, data, valid, ack_clr, 
         px_h, px_v, px_12bit_data, px_24bit_data,
         rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3);

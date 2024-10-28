@@ -1,4 +1,4 @@
-module color_processor(input clk, rst, SW0, SW1, swap_h, swap_v, color_valid, input[23:0] rgb0, rgb1, rgb2, rgb3, output[23:0] ch0, ch1, ch2, ch3);
+module color_processor(input clk, rst, SW0, SW1, swap_h, swap_v, input[3:0] color_valid, input[23:0] rgb0, rgb1, rgb2, rgb3, output[23:0] ch0, ch1, ch2, ch3);
     reg[23:0] ch0_ff, ch0_nxt, ch1_ff, ch1_nxt, ch2_ff, ch2_nxt, ch3_ff, ch3_nxt;
     reg[23:0] rgb0_ff, rgb0_nxt, rgb1_ff, rgb1_nxt, rgb2_ff, rgb2_nxt, rgb3_ff, rgb3_nxt;
     reg swap_h_check_ff, swap_h_check_nxt, swap_v_check_ff, swap_v_check_nxt;
@@ -23,10 +23,19 @@ module color_processor(input clk, rst, SW0, SW1, swap_h, swap_v, color_valid, in
         swap_v_check_nxt = swap_v_check_ff;
         
 
-        if(color_valid) begin
+        if(color_valid[0]) begin
             rgb0_nxt = rgb0;
+        end
+
+        if(color_valid[1]) begin
             rgb1_nxt = rgb1;
+        end
+
+        if(color_valid[2]) begin
             rgb2_nxt = rgb2;
+        end
+
+        if(color_valid[3]) begin
             rgb3_nxt = rgb3;
         end
 

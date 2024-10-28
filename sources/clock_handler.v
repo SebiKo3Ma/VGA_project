@@ -11,8 +11,8 @@ module clock_handler(input clk, rst, input[2:0] baud, input[3:0] px_ratio_pos, o
     always @(posedge clk or posedge rst) begin
         if(rst) begin
             baud_ratio[0] <= 15'd20833;
-            baud_ratio[1] <= 15'd32; //10417 //32
-            baud_ratio[2] <= 15'd48; //5208 //48
+            baud_ratio[1] <= 15'd10417; //10417 //32
+            baud_ratio[2] <= 15'd5208; //5208 //48
             baud_ratio[3] <= 15'd1736;
             baud_ratio[4] <= 15'd868;
             px_ratio <= 15'd4;

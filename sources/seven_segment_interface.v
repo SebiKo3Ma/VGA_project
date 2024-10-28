@@ -1,5 +1,5 @@
 `timescale 1ns/1ns
-module seven_segment_interface(input clk, rst, en_7s_frame, debug_color, debug_clr_reg, fault, frame_valid, input[8:0] frame, input[1:0] channel, input[23:0]rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3, output[31:0] digit, output[7:0] en_dot, en_digit);
+module seven_segment_interface(input clk, rst, en_7s_frame, debug_color, debug_clr_reg, fault, frame_valid, input[7:0] frame, input[1:0] channel, input[23:0]rgb0, rgb1, rgb2, rgb3, ch0, ch1, ch2, ch3, output[31:0] digit, output[7:0] en_dot, en_digit);
     reg[31:0] digit_ff, digit_nxt;
     reg[7:0] en_dot_ff, en_dot_nxt, en_digit_ff, en_digit_nxt;
     reg[7:0] frame_ff, frame_nxt;
